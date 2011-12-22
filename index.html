@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>TopShelf Web UI - Slideshow</title>
+		<link rel="stylesheet" href="css/style.css">
+		<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+		<script src="js/ts-slideshow.js"></script>
+	</head>
+	<body>
+		<div class="ts-slideshow">
+			<div class="panels">
+				<div class="panel">
+					<p>
+						First Panel
+					</p>
+				</div>
+				<div class="panel">
+					<p>
+						Second Panel
+					</p>
+				</div>
+				<div class="panel">
+					<p>
+						Third Panel
+					</p>
+				</div>
+				<div class="panel">
+					<p>
+						Fourth Panel
+					</p>
+				</div>
+				<div class="panel">
+					<p>
+						Fifth Panel
+					</p>
+				</div>
+			</div>
+			<div class="nav">
+				<a class="step prev" href="">&lsaquo;</a>
+				<a class='marker' href=''></a>
+				<a class='marker' href=''></a>
+				<a class='marker' href=''></a>
+				<a class='marker' href=''></a>
+				<a class='marker' href=''></a>
+				<a class="step next" href="">&rsaquo;</a>
+			</div>
+		</div>
+		<script>
+			$(function(){
+				$(".ts-slideshow").tsSlideshow({
+					"transition": "slide"
+					, "transitionSpeed": 250
+					, "autoAdvance": false
+					, "autoAdvanceSpeed": 3000
+					, "loop": true
+				});
+			});
+		</script>
+	</body>
+</html>
