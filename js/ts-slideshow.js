@@ -39,17 +39,23 @@
 							$(o.outgoing).animate({
 								left: "-100%"
 								, marginLeft: (paddingLeft + borderOffset) * -1
-							}, slideshow.settings.transitionSpeed);
+							}, slideshow.settings.transitionSpeed, function() {
+								$(o.outgoing).hide();
+							});
 						} else {
 							$(o.outgoing).animate({
 								left: "100%"
 								, marginLeft: paddingRight + borderOffset
-							}, slideshow.settings.transitionSpeed);
+							}, slideshow.settings.transitionSpeed, function() {
+								$(o.outgoing).hide();
+							});
 						}
 					};
 					
 					fx.tranIn = function(o) {
 						var borderOffset = parseInt(o.incoming.css("border-left-width"), 10) + parseInt(o.incoming.css("border-right-width"), 10);
+						
+						$(o.incoming).show();
 						
 						$(o.incoming).animate({
 							left: "50%"
@@ -277,7 +283,8 @@
 				
 				fx.init();
 				
-				$(slideshow.panels[0]).addClass("current");
+				$(slideshow.panels).hide();
+				$(slideshow.panels[0]).addClass("current").show();
 				$(slideshow.markers[0]).addClass("current");
 				
 				// auto advance
