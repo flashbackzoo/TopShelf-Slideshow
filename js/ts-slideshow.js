@@ -1,7 +1,3 @@
-// TopShelf Web UI - Slideshow v1.0
-// Author: David Craig
-// Email: davidcraignz@gmail.com
-
 (function ($) {
 	$.fn.tsSlideshow = function(options) {
 		// default settings
@@ -17,12 +13,10 @@
 			var slideshow = {
 				container: this
 				, settings: settings
-				, slideshowWidth: $(this).outerWidth()
-				, panelsWrapper: $(this).find(".panels")
-				, panels: $(this).find(".panel")
-				, navWrapper: $(this).find(".nav")
-				, markers: $(this).find(".marker")
-				, steps: $(this).find(".step")
+				, panels: $(this).find("[data-ui='slideshow-panel']")
+				, markers: $(this).find("[data-ui='slideshow-marker']")
+				, backButtons: $(this).find("[data-ui='slideshow-back']")
+				, forwardButtons: $(this).find("[data-ui='slideshow-forward']")
 			};
 			
 			////////////
@@ -139,20 +133,20 @@
 				(function() {
 					ctr.back = function () {
 						var o = {};
-						var prevMarker = "";
-						o.outgoing = slideshow.panelsWrapper.children(".current");
+						var pos = "";
+						o.outgoing = $(slideshow.container).find("[data-ui='slideshow-panel'].current");
 						
 						if (o.outgoing.length) { // make sure transition has finished before starting another one
-							o.incoming = slideshow.panelsWrapper.children(".current").prev()
+							o.incoming = $(slideshow.container).find("[data-ui='slideshow-panel'].current").prev()
 							, o.direction = "back";
 							
-							if (o.incoming.length) {
-								prevMarker = slideshow.navWrapper.children(".current").prev();
+							if (o.incoming.length) { // if there is a previous panel
+								pos = $(slideshow.panels).index(o.incoming);
 								fx.tranOut(o);
 								fx.tranIn(o);
 								$(slideshow.markers).removeClass("current");
-								$(prevMarker).addClass("current");
-							} else if (slideshow.settings.loop === true) {
+								$(slideshow.markers[pos]).addClass("current");
+							} else if (slideshow.settings.loop === true) { // if there is no previous panel but loop in enabled
 								prevMarker = $(slideshow.markers[slideshow.markers.length - 1]);
 								o.incoming = $(slideshow.panels[slideshow.panels.length - 1]);
 								try { // transition may require a restart method when looping
@@ -169,19 +163,19 @@
 					ctr.forward = function () {
 						var o = {};
 						var pos = "";
-						o.outgoing = slideshow.panelsWrapper.children(".current");
+						o.outgoing = $(slideshow.container).find("[data-ui='slideshow-panel'].current");
 						
 						if (o.outgoing.length) { // make sure transition has finished before starting another one
-							o.incoming = slideshow.panelsWrapper.children(".current").next()
+							o.incoming = $(slideshow.container).find("[data-ui='slideshow-panel'].current").next()
 							, o.direction = "forward";
 							
-							if (o.incoming.length) {
-								pos = $(slideshow.panelsWrapper.children(".panel")).index(o.incoming);
+							if (o.incoming.length) { // if there is a next panel
+								pos = $(slideshow.panels).index(o.incoming);
 								fx.tranOut(o);
 								fx.tranIn(o);
 								$(slideshow.markers).removeClass("current");
 								$(slideshow.markers[pos]).addClass("current");
-							} else if (slideshow.settings.loop === true) {
+							} else if (slideshow.settings.loop === true) { // if there is no next panel but loop in enabled
 								nextMarker = $(slideshow.markers[0]);
 								o.incoming = $(slideshow.panels[0]);
 								try { // transition may require a restart method when looping
@@ -197,14 +191,14 @@
 					
 					ctr.jumpTo = function (p) {
 						var o = {}
-						o.outgoing = slideshow.panelsWrapper.children(".current")
+						o.outgoing = $(slideshow.container).find("[data-ui='slideshow-panel'].current")
 						, o.incoming = $(p)
 						, o.direction = "back";
 						
 						var i = 0
 							, nextPanels = o.outgoing.nextAll()
 							, l = nextPanels.length
-							, pos = $(slideshow.panelsWrapper.children(".panel")).index(o.incoming);
+							, pos = $(slideshow.panels).index(o.incoming);
 							
 						if (o.outgoing.length) { // make sure transition has finished before starting another one
 							for (i = 0; i < l; i += 1) {
@@ -247,18 +241,15 @@
 						}
 					};
 					
-					evt.steps = function () {
-						// previous and next
-						if (slideshow.steps.length > 0) {
-							$(slideshow.steps[0]).bind("click", function (e) {
-								e.preventDefault();
-								ctr.back();
-							});
-							$(slideshow.steps[1]).bind("click", function (e) {
-								e.preventDefault();
-								ctr.forward();
-							});
-						}
+					evt.steps = function () { // previous and next
+						$(slideshow.backButtons).bind("click", function (e) {
+							e.preventDefault();
+							ctr.back();
+						});
+						$(slideshow.forwardButtons).bind("click", function (e) {
+							e.preventDefault();
+							ctr.forward();
+						});
 					};
 				})();
 				return evt;

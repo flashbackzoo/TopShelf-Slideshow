@@ -8,47 +8,47 @@
 		<script src="js/ts-slideshow.js"></script>
 	</head>
 	<body>
-		<div class="ts-slideshow">
+		<div data-ui="slideshow">
 			<div class="panels">
-				<div class="panel">
+				<div data-ui="slideshow-panel">
 					<p>
 						First Panel
 					</p>
 				</div>
-				<div class="panel">
+				<div data-ui="slideshow-panel">
 					<p>
 						Second Panel
 					</p>
 				</div>
-				<div class="panel">
+				<div data-ui="slideshow-panel">
 					<p>
 						Third Panel
 					</p>
 				</div>
-				<div class="panel">
+				<div data-ui="slideshow-panel">
 					<p>
 						Fourth Panel
 					</p>
 				</div>
-				<div class="panel">
+				<div data-ui="slideshow-panel">
 					<p>
 						Fifth Panel
 					</p>
 				</div>
 			</div>
 			<div class="nav">
-				<a class="step prev" href="">&lsaquo;</a>
-				<a class='marker' href=''></a>
-				<a class='marker' href=''></a>
-				<a class='marker' href=''></a>
-				<a class='marker' href=''></a>
-				<a class='marker' href=''></a>
-				<a class="step next" href="">&rsaquo;</a>
+				<a href="" data-ui="slideshow-back">&lsaquo;</a>
+				<a href="" data-ui="slideshow-marker"></a>
+				<a href="" data-ui="slideshow-marker"></a>
+				<a href="" data-ui="slideshow-marker"></a>
+				<a href="" data-ui="slideshow-marker"></a>
+				<a href="" data-ui="slideshow-marker"></a>
+				<a href="" data-ui="slideshow-forward">&rsaquo;</a>
 			</div>
 		</div>
 		<script>
 			$(function(){
-				$(".ts-slideshow").tsSlideshow({
+				$("[data-ui='slideshow']").tsSlideshow({
 					"transition": "slide"
 					, "transitionSpeed": 250
 					, "autoAdvance": false
