@@ -1,12 +1,6 @@
 #TopShelf - Slideshow
 A slideshow plugin for jQuery.
 
-## Features
-* Slide and fade transitions.
-* Multiple slideshows on one page.
-* Optional loop and auto advance.
-* Model Control Binding structure for easy customization.
-
 ## Setup
 ###Add Scripts and CSS
 
@@ -15,34 +9,51 @@ A slideshow plugin for jQuery.
     <link rel="stylesheet" href="css/style.css">
 
 ###Add some markup.
-Elements require the class names shown below. The only exception is the outermost element, which can have any class or id you like. Navigation elements are optional, excluding the entire block, markers, or steps is fine.
+All required JavaScript hooks are data-ui attributes. You can override hte default styles by adding your own CSS classes to elements.
 
-    <div class="slideshow">
+All navigation elements are optional.
+
+    <div data-ui="slideshow">
         <div class="panels">
-            <div class="panel">
-                <p>First Panel</p>
+            <div data-ui="slideshow-panel">
+                <p>
+                    First Panel
+                </p>
             </div>
-            <div class="panel">
-                <p>Second Panel</p>
+            
+            <div data-ui="slideshow-panel">
+                <p>
+                    Second Panel
+                </p>
             </div>
-            <div class="panel">
-                <p>Third Panel</p>
+
+            <div data-ui="slideshow-panel">
+                <p>
+                    Third Panel
+                </p>
             </div>
-            <div class="panel">
-                <p>Fourth Panel</p>
+
+            <div data-ui="slideshow-panel">
+                <p>
+                    Fourth Panel
+                </p>
             </div>
-            <div class="panel">
-                <p>Fifth Panel</p>
+
+            <div data-ui="slideshow-panel">
+                <p>
+                    Fifth Panel
+                </p>
             </div>
         </div>
+
         <div class="nav">
-            <a class="step prev" href="">&lsaquo;</a>
-            <a class='marker' href=''></a>
-            <a class='marker' href=''></a>
-            <a class='marker' href=''></a>
-            <a class='marker' href=''></a>
-            <a class='marker' href=''></a>
-            <a class="step next" href="">&rsaquo;</a>
+            <a href="" data-ui="slideshow-back">&lsaquo;</a>
+            <a href="" data-ui="slideshow-marker"></a>
+            <a href="" data-ui="slideshow-marker"></a>
+            <a href="" data-ui="slideshow-marker"></a>
+            <a href="" data-ui="slideshow-marker"></a>
+            <a href="" data-ui="slideshow-marker"></a>
+            <a href="" data-ui="slideshow-forward">&rsaquo;</a>
         </div>
     </div>
 
@@ -50,14 +61,14 @@ Elements require the class names shown below. The only exception is the outermos
 
     <script>
         $(function(){
-            $(".slideshow").tsSlideshow();
+            $("[data-ui='slideshow']").tsSlideshow();
         });
     </script>
 
 ## Options
 You can pass .tsSlideshow() some optional settings. The defaults are...
 
-    $(".slideshow").tsSlideshow({
+    $("[data-ui='slideshow']").tsSlideshow({
         "transition": "slide"
         , "transitionSpeed": 250
         , "autoAdvance": false
