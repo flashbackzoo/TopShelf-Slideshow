@@ -13,6 +13,7 @@
 			var slideshow = {
 				container: this
 				, settings: settings
+				, panelsWrapper: $(this).find("[data-ui='slideshow-panelsWrapper']")
 				, panels: $(this).find("[data-ui='slideshow-panel']")
 				, markers: $(this).find("[data-ui='slideshow-marker']")
 				, backButtons: $(this).find("[data-ui='slideshow-back']")
@@ -31,7 +32,13 @@
 					
 				(function() {
 					fx.tranOut = function (o) {
-						var borderOffset = parseInt(o.outgoing.css("border-left-width"), 10) + parseInt(o.outgoing.css("border-right-width"), 10);
+						var borderOffset = parseInt(o.outgoing.css("border-left-width"), 10) + parseInt(o.outgoing.css("border-right-width"), 10)
+							, incomingHeight = $(o.incoming).outerHeight();
+						
+						if (incomingHeight > $(o.outgoing).height()) { // set wrapper height
+							$(slideshow.container).css("height", incomingHeight);
+							$(slideshow.panelsWrapper).css("height", incomingHeight);
+						}
 						
 						o.outgoing.removeClass("current");
 						
@@ -53,13 +60,14 @@
 					};
 					
 					fx.tranIn = function(o) {
-						var borderOffset = parseInt(o.incoming.css("border-left-width"), 10) + parseInt(o.incoming.css("border-right-width"), 10);
+						var borderOffset = parseInt(o.incoming.css("border-left-width"), 10) + parseInt(o.incoming.css("border-right-width"), 10)
+						, incomingHeight = $(o.incoming).outerHeight();
 						
 						$(o.incoming).show();
 						
 						$(o.incoming).animate({
 							left: "50%"
-							, marginLeft: "-" + ($(slideshow.container).width() / 2)
+							, marginLeft: "-" + ($(slideshow.panelsWrapper).width() / 2)
 						}, slideshow.settings.transitionSpeed, function () {
 							$(o.incoming).prevAll().css({
 								left: "-100%"
@@ -70,6 +78,12 @@
 								left: "100%"
 								, marginLeft: paddingRight + borderOffset
 							});
+							
+							if (incomingHeight < $(o.outgoing).height()) { // set wrapper height
+								$(slideshow.container).css("height", incomingHeight);
+								$(slideshow.panelsWrapper).css("height", incomingHeight);
+								console.dir(slideshow.container);
+							}
 							
 							o.incoming.addClass("current");
 						});
@@ -137,63 +151,51 @@
 			var controls = function(fx) {
 				var ctr = {};
 				(function() {
-					ctr.back = function () {
+					ctr.step = function (direction) {
 						var o = {};
 						var pos = "";
 						o.outgoing = $(slideshow.container).find("[data-ui='slideshow-panel'].current");
 						
 						if (o.outgoing.length) { // make sure transition has finished before starting another one
-							o.incoming = $(slideshow.container).find("[data-ui='slideshow-panel'].current").prev()
-							, o.direction = "back";
+							if (direction === "back") {
+								o.incoming = $(slideshow.container).find("[data-ui='slideshow-panel'].current").prev()
+								, o.direction = "back";
+							} else {
+								o.incoming = $(slideshow.container).find("[data-ui='slideshow-panel'].current").next()
+								, o.direction = "forward";
+							}
 							
-							if (o.incoming.length) { // if there is a previous panel
+							if (o.incoming.length) { // make sure there is a panel to transition in
 								pos = $(slideshow.panels).index(o.incoming);
 								fx.tranOut(o);
 								fx.tranIn(o);
 								$(slideshow.markers).removeClass("current");
 								$(slideshow.markers[pos]).addClass("current");
-							} else if (slideshow.settings.loop === true) { // if there is no previous panel but loop in enabled
-								prevMarker = $(slideshow.markers[slideshow.markers.length - 1]);
-								o.incoming = $(slideshow.panels[slideshow.panels.length - 1]);
-								try { // transition may require a restart method when looping
+							} else if (slideshow.settings.loop === true) { // if there is no incoming panel but 'loop' in enabled
+								if (direction === "back") {
+									prevMarker = $(slideshow.markers[slideshow.markers.length - 1]);
+									o.incoming = $(slideshow.panels[slideshow.panels.length - 1]);
+								} else {
+									nextMarker = $(slideshow.markers[0]);
+									o.incoming = $(slideshow.panels[0]);
+								}
+								
+								try { // transition model may require a restart method when looping
 									fx.restart(o);
 								} catch (err) {}
+								
 								fx.tranOut(o);
 								fx.tranIn(o);
 								$(slideshow.markers).removeClass("current");
-								$(prevMarker).addClass("current");
+								
+								if (direction === "back") {
+									$(prevMarker).addClass("current");
+								} else {
+									$(slideshow.markers[0]).addClass("current");
+								}
 							}
 						}
-					};
-					
-					ctr.forward = function () {
-						var o = {};
-						var pos = "";
-						o.outgoing = $(slideshow.container).find("[data-ui='slideshow-panel'].current");
-						
-						if (o.outgoing.length) { // make sure transition has finished before starting another one
-							o.incoming = $(slideshow.container).find("[data-ui='slideshow-panel'].current").next()
-							, o.direction = "forward";
-							
-							if (o.incoming.length) { // if there is a next panel
-								pos = $(slideshow.panels).index(o.incoming);
-								fx.tranOut(o);
-								fx.tranIn(o);
-								$(slideshow.markers).removeClass("current");
-								$(slideshow.markers[pos]).addClass("current");
-							} else if (slideshow.settings.loop === true) { // if there is no next panel but loop in enabled
-								nextMarker = $(slideshow.markers[0]);
-								o.incoming = $(slideshow.panels[0]);
-								try { // transition may require a restart method when looping
-									fx.restart(o);
-								} catch (err) {}
-								fx.tranOut(o);
-								fx.tranIn(o);
-								$(slideshow.markers).removeClass("current");
-								$(slideshow.markers[0]).addClass("current");
-							}
-						}
-					};
+					}
 					
 					ctr.jumpTo = function (p) {
 						var o = {}
@@ -250,11 +252,11 @@
 					evt.steps = function () { // previous and next
 						$(slideshow.backButtons).bind("click", function (e) {
 							e.preventDefault();
-							ctr.back();
+							ctr.step("back");
 						});
 						$(slideshow.forwardButtons).bind("click", function (e) {
 							e.preventDefault();
-							ctr.forward();
+							ctr.step("forward");
 						});
 					};
 				})();
@@ -286,6 +288,9 @@
 				$(slideshow.panels).hide();
 				$(slideshow.panels[0]).addClass("current").show();
 				$(slideshow.markers[0]).addClass("current");
+				
+				$(slideshow.container).css("height", $(slideshow.panels[0]).outerHeight());
+				$(slideshow.panelsWrapper).css("height", $(slideshow.panels[0]).outerHeight());
 				
 				// auto advance
 				if (slideshow.settings.autoAdvance === true) {

@@ -1,28 +1,25 @@
 *[data-ui="slideshow"]{
-	position:relative;
-	width:320px;
-	height:250px;
+	width:380px;
 	margin:0 auto;
-	padding:0 30px;
 	font-family:Helvetica, Arial, sans-serif;
 	font-weight:lighter;
-	overflow:hidden;
 }
 *[data-ui="slideshow"] p{
 	font-size:13px;
 	margin:0;
 }
-*[data-ui="slideshow"] .panels{
+*[data-ui="slideshow-panelsWrapper"]{
 	position:relative;
 	width:320px;
-	height:200px;
+	padding:0 30px;
+	overflow:hidden;
 }
 *[data-ui="slideshow"] .nav{
 	display:block;
 	position:relative;
 	width:320px;
 	height:32px;
-	margin-top:15px;
+	margin:15px auto;
 	text-align:center;
 }
 *[data-ui="slideshow-panel"]{
