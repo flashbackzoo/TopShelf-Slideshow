@@ -125,12 +125,27 @@
 				var fx = {};
 				(function() {
 					fx.tranIn = function(o) {
+						var incomingHeight = $(o.incoming).outerHeight();
+						
 						$(o.incoming).fadeIn(slideshow.settings.transitionSpeed, function () {
 							$(o.incoming).addClass("current");
 						});
+						
+						if (incomingHeight < $(o.outgoing).height()) { // set wrapper height
+							$(slideshow.container).css("height", incomingHeight);
+							$(slideshow.panelsWrapper).css("height", incomingHeight);
+							console.dir(slideshow.container);
+						}
 					};
 					
 					fx.tranOut = function (o) {
+						var incomingHeight = $(o.incoming).outerHeight();
+						
+						if (incomingHeight > $(o.outgoing).height()) { // set wrapper height
+							$(slideshow.container).css("height", incomingHeight);
+							$(slideshow.panelsWrapper).css("height", incomingHeight);
+						}
+						
 						$(o.outgoing).removeClass("current");
 						$(o.outgoing).fadeOut(slideshow.settings.transitionSpeed);
 					};

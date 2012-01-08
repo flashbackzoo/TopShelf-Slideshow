@@ -8,42 +8,48 @@
 		<script src="js/ts-slideshow.js"></script>
 	</head>
 	<body>
-		<div data-ui="slideshow">
-			<div data-ui="slideshow-panelsWrapper">
-				<div data-ui="slideshow-panel">
+		<div class="slideshow" data-ui="slideshow">
+			<div class="panels" data-ui="slideshow-panelsWrapper">
+				<div class="panel" data-ui="slideshow-panel">
 					<p>
 						First Panel
 					</p>
 				</div>
-				<div data-ui="slideshow-panel">
+				<div class="panel" data-ui="slideshow-panel">
 					<p>
 						Second Panel
 					</p>
 				</div>
-				<div data-ui="slideshow-panel">
+				<div class="panel" data-ui="slideshow-panel">
 					<p>
 						Third Panel
 					</p>
 				</div>
-				<div data-ui="slideshow-panel">
+				<div class="panel" data-ui="slideshow-panel">
 					<p>
 						Fourth Panel
 					</p>
 				</div>
-				<div data-ui="slideshow-panel">
+				<div class="panel" data-ui="slideshow-panel">
 					<p>
 						Fifth Panel
 					</p>
 				</div>
 			</div>
+			
+			<!--
+        		Optional navigation elements.
+        		Include / exclude these as you like.
+        	-->
+			
 			<div class="nav">
-				<a href="" data-ui="slideshow-back">&lsaquo;</a>
-				<a href="" data-ui="slideshow-marker"></a>
-				<a href="" data-ui="slideshow-marker"></a>
-				<a href="" data-ui="slideshow-marker"></a>
-				<a href="" data-ui="slideshow-marker"></a>
-				<a href="" data-ui="slideshow-marker"></a>
-				<a href="" data-ui="slideshow-forward">&rsaquo;</a>
+				<a class="step back" href="" data-ui="slideshow-back">&lsaquo;</a>
+				<a class="marker" href="" data-ui="slideshow-marker"></a>
+				<a class="marker" href="" data-ui="slideshow-marker"></a>
+				<a class="marker" href="" data-ui="slideshow-marker"></a>
+				<a class="marker" href="" data-ui="slideshow-marker"></a>
+				<a class="marker" href="" data-ui="slideshow-marker"></a>
+				<a class="step forward" href="" data-ui="slideshow-forward">&rsaquo;</a>
 			</div>
 		</div>
 		<script>
