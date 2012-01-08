@@ -63,7 +63,7 @@ This seperation makes your CSS more manageable and creating new skins easy.
     </div>
 
 ###Hook it up
-Turn your markup into a Slideshow. Add this script directly before your </body> tag.
+Turn your markup into a Slideshow. Add this script directly before your closing body tag.
 
     <script>
         $(function(){
@@ -96,3 +96,6 @@ How long to stay on each panel before advancing.
 
 ### loop
 Make the last panel connect up with the first one.
+
+## Demo
+[http://flashbackzoo.github.com/TopShelf-Slideshow/](http://flashbackzoo.github.com/TopShelf-Slideshow/)
