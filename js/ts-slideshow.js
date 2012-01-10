@@ -311,7 +311,7 @@
 				if (slideshow.settings.autoAdvance === true) {
 					(function () {
 						var auto = function () {
-							ctr.forward();
+							ctr.step("forward");
 						}
 						setInterval(auto, slideshow.settings.autoAdvanceSpeed);
 					})();
