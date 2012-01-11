@@ -6,7 +6,7 @@
 			, "transitionSpeed": 250
 			, "autoAdvance": false
 			, "autoAdvanceSpeed": 1000
-			, "loop": true
+			, "loop": false
 			, "scroll": false
 		}, options);
 
@@ -28,59 +28,46 @@
 			// horizontal slide transitions
 			var horizontal = function () {
 				var fx = {};
-				var paddingRight = parseInt($(slideshow.container).css("padding-right"), 10)
-					, paddingLeft = parseInt($(slideshow.container).css("padding-left"), 10);
 
 				(function () {
 					fx.tranOut = function (o) {
-						var borderOffset = parseInt(o.outgoing.css("border-left-width"), 10) + parseInt(o.outgoing.css("border-right-width"), 10)
-							, incomingHeight = $(o.incoming).outerHeight(true);
-
-						if (incomingHeight > $(o.outgoing).height()) { // set wrapper height
-							$(slideshow.panelsWrapper).css("height", incomingHeight);
+						// set wrapper height
+						if (o.incoming.outerHeight() > o.outgoing.outerHeight()) {
+							$(slideshow.panelsWrapper).css("height", o.incoming.outerHeight());
 						}
 
 						o.outgoing.removeClass("current");
 
 						if (o.direction === "forward") {
-							$(o.outgoing).animate({
-								left: "-100%"
-								, marginLeft: (paddingLeft + borderOffset) * -1
-							}, slideshow.settings.transitionSpeed, function () {
-								$(o.outgoing).hide();
-							});
+							o.outgoing.animate({
+									left: "-100%"
+									, "margin-left": 0
+								}, slideshow.settings.transitionSpeed
+							);
 						} else {
-							$(o.outgoing).animate({
-								left: "100%"
-								, marginLeft: paddingRight + borderOffset
-							}, slideshow.settings.transitionSpeed, function () {
-								$(o.outgoing).hide();
-							});
+							o.outgoing.animate({
+									left: "100%"
+									, "margin-left": 0
+								}, slideshow.settings.transitionSpeed
+							);
 						}
 					};
 
 					fx.tranIn = function (o) {
-						var borderOffset = parseInt(o.incoming.css("border-left-width"), 10) + parseInt(o.incoming.css("border-right-width"), 10)
-						, incomingHeight = $(o.incoming).outerHeight(true);
-
-						$(o.incoming).show();
-
-						$(o.incoming).animate({
+						o.incoming.animate({
 							left: "50%"
-							, marginLeft: "-" + ($(slideshow.panelsWrapper).width() / 2)
-						}, slideshow.settings.transitionSpeed, function () { // position all previous and next panels
-							$(o.incoming).prevAll().css({
+							, "margin-left": "-" + ($(o.incoming).outerWidth() / 2) + "px"
+						}, slideshow.settings.transitionSpeed, function () {
+							// position all previous and next panels
+							o.incoming.prevAll().css({
 								left: "-100%"
-								, marginLeft: (paddingLeft + borderOffset) * -1
 							});
-
-							$(o.incoming).nextAll().css({
+							o.incoming.nextAll().css({
 								left: "100%"
-								, marginLeft: paddingRight + borderOffset
 							});
-
-							if (incomingHeight < $(o.outgoing).height()) { // set wrapper height
-								$(slideshow.panelsWrapper).css("height", incomingHeight);
+							// set wrapper height
+							if (o.incoming.outerHeight() < o.outgoing.outerHeight()) {
+								$(slideshow.panelsWrapper).css("height", o.incoming.outerHeight());
 							}
 
 							o.incoming.addClass("current");
@@ -88,29 +75,24 @@
 					};
 
 					fx.restart = function (o) {
-						var borderOffset = parseInt(o.outgoing.css("border-left-width"), 10) + parseInt(o.outgoing.css("border-right-width"), 10);
-
 						if (o.direction === "forward") {
-							$(o.incoming).css({
+							o.incoming.css({
 								left: "100%"
-								, marginLeft: paddingRight + borderOffset
 							});
 						} else {
 							$(o.incoming).css({
 								left: "-100%"
-								, marginLeft: (paddingLeft + borderOffset) * -1
 							});
 						}
 					};
 
 					fx.init = function () {
-						var paddingRight = parseInt($(slideshow.container).css("padding-left"), 10)
-							, borderOffset = parseInt($(slideshow.panels[0]).css("border-left-width"), 10) + parseInt($(slideshow.panels[0]).css("border-right-width"), 10);
-						l = slideshow.panels.length;
+						var i = 0
+							, l = slideshow.panels.length;
+
 						for (i = 1; i < l; i += 1) {
 							$(slideshow.panels[i]).css({
 								left: "100%"
-								, marginLeft: paddingRight
 							});
 						}
 					};
@@ -128,49 +110,39 @@
 
 						if (o.direction === "forward") { // up
 							o.outgoing.animate({
-								top: "-100%"
-								, "margin-top": "-" + (o.incoming.outerHeight() / 2) + "px"
-							}
-								, slideshow.settings.transitionSpeed
-								, function () {
-									o.outgoing.hide();
+									top: "-100%"
+									, "margin-top": 0
 								}
+								, slideshow.settings.transitionSpeed
 							);
 						} else { // down
-							o.outgoing.animate(
-								{
+							o.outgoing.animate({
 									top: "100%"
-									, "margin-top": (o.incoming.outerHeight() / 2) + "px"
+									, "margin-top": 0
 								}
 								, slideshow.settings.transitionSpeed
-								, function () {
-									o.outgoing.hide();
-								}
 							);
 						}
 					};
 
 					fx.tranIn = function (o) {
-						o.incoming.show();
 						o.incoming.animate({
-							top: "50%"
-								, "margin-top": "-" + (o.incoming.outerHeight() / 2) + "px"
-						}
+								top: "50%"
+								, "margin-top": "-" + ($(o.incoming).outerHeight() / 2) + "px"
+							}
 							, slideshow.settings.transitionSpeed
 							, function () {
 								// position all previous panels
 								o.incoming.prevAll().css({
 									top: "-100%"
-									, "margin-top": "-" + (o.incoming.outerHeight() / 2) + "px"
 								});
 								// position all next panels
 								o.incoming.nextAll().css({
 									top: "100%"
-									, "margin-top": (o.incoming.outerHeight() / 2) + "px"
 								});
 								// set panels wrapper height
-								if (o.incoming.outerHeight() < $(o.outgoing).height()) {
-									$(slideshow.panelsWrapper).css("height", o.incoming.outerHeight());
+								if ($(o.incoming).outerHeight() < $(o.outgoing).outerHeight()) {
+									$(slideshow.panelsWrapper).css("height", $(o.incoming).outerHeight());
 								}
 								o.incoming.addClass("current");
 							}
@@ -181,12 +153,12 @@
 						if (o.direction === "forward") {
 							$(o.incoming).css({
 								top: "100%"
-								, "margin-top": (o.incoming.outerHeight() / 2) + "px"
+								, "margin-top": (o.incoming[0].clientHeight / 2) + "px"
 							});
 						} else {
 							$(o.incoming).css({
 								top: "-100%"
-								, "margin-top": "-" + (o.incoming.outerHeight() / 2) + "px"
+								, "margin-top": "-" + (o.incoming[0].clientHeight / 2) + "px"
 							});
 						}
 					};
@@ -413,8 +385,7 @@
 				}
 
 				// set initial state
-				$(slideshow.panels).hide();
-				$(slideshow.panels[0]).addClass("current").show();
+				$(slideshow.panels[0]).addClass("current");
 				$(slideshow.markers[0]).addClass("current");
 				$(slideshow.panelsWrapper).css("height", initHeight);
 			})();

@@ -75,15 +75,16 @@ Turn your markup into a Slideshow. Add this script directly before your closing 
 You can pass .tsSlideshow() some optional settings. Here are the defaults...
 
     $("[data-ui='slideshow']").tsSlideshow({
-        "transition": "slide"
+        "transition": "horizontal"
         , "transitionSpeed": 250
         , "autoAdvance": false
         , "autoAdvanceSpeed": 1000
-        , "loop": true
+        , "loop": false
+        , "scroll": false
     });
 
 ### transition
-The type of transition to use. Values can be "slide" or "fade".
+The type of transition to use. Values can be "horizontal", "vertical" or "fade".
 
 ### transitionSpeed
 The speed of the transition animation.
@@ -96,6 +97,9 @@ How long to stay on each panel before advancing.
 
 ### loop
 Make the last panel connect up with the first one.
+
+### scroll
+Hover over the Slideshow and scroll to cycle through the panels.
 
 ## Demo
 [http://flashbackzoo.github.com/TopShelf-Slideshow/](http://flashbackzoo.github.com/TopShelf-Slideshow/)
