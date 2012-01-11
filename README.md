@@ -53,11 +53,11 @@ This seperation makes your CSS more manageable and creating new skins easy.
 
         <div class="nav">
             <a class="step back" href="" data-ui="slideshow-back">&lsaquo;</a>
-            <a class="step" href="" data-ui="slideshow-marker"></a>
-            <a class="step" href="" data-ui="slideshow-marker"></a>
-            <a class="step" href="" data-ui="slideshow-marker"></a>
-            <a class="step" href="" data-ui="slideshow-marker"></a>
-            <a class="step" href="" data-ui="slideshow-marker"></a>
+            <a class="marker" href="" data-ui="slideshow-marker"></a>
+            <a class="marker" href="" data-ui="slideshow-marker"></a>
+            <a class="marker" href="" data-ui="slideshow-marker"></a>
+            <a class="marker" href="" data-ui="slideshow-marker"></a>
+            <a class="marker" href="" data-ui="slideshow-marker"></a>
             <a class="step forward" href="" data-ui="slideshow-forward">&rsaquo;</a>
         </div>
     </div>
