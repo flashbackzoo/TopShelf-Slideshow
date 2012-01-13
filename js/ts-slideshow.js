@@ -14,12 +14,26 @@
 			var slideshow = {
 				container: this
 				, settings: settings
-				, panelsWrapper: $(this).find("[data-ui='slideshow-panelsWrapper']")
-				, panels: $(this).find("[data-ui='slideshow-panel']")
-				, markers: $(this).find("[data-ui='slideshow-marker']")
-				, backButtons: $(this).find("[data-ui='slideshow-back']")
-				, forwardButtons: $(this).find("[data-ui='slideshow-forward']")
+				, panelsWrapper: getParts($(this).find("[data-ui='slideshow-panelsWrapper']"), this)
+				, panels: getParts($(this).find("[data-ui='slideshow-panel']"), this)
+				, markers: getParts($(this).find("[data-ui='slideshow-marker']"), this)
+				, backButtons: getParts($(this).find("[data-ui='slideshow-back']"), this)
+				, forwardButtons: getParts($(this).find("[data-ui='slideshow-forward']"), this)
 			};
+			
+			function getParts (els, context) {
+				var i = 0
+					, l = els.length
+					, parts = [];
+				
+				for (i = 0; i < l; i += 1 ) {
+					if ($(els[i]).closest("[data-ui='slideshow']")[0] === context) {
+						parts[parts.length] = els[i];
+					}
+				}
+				
+				return parts;
+			}
 
 			////////////
 			// MODELS //
@@ -32,20 +46,20 @@
 				(function () {
 					fx.tranOut = function (o) {
 						// set wrapper height
-						if (o.incoming.outerHeight() > o.outgoing.outerHeight()) {
-							$(slideshow.panelsWrapper).css("height", o.incoming.outerHeight());
+						if ($(o.incoming).outerHeight() > $(o.outgoing).outerHeight()) {
+							$(slideshow.panelsWrapper).css("height", $(o.incoming).outerHeight());
 						}
 
-						o.outgoing.removeClass("current");
+						$(o.outgoing).removeClass("current");
 
 						if (o.direction === "forward") {
-							o.outgoing.animate({
+							$(o.outgoing).animate({
 									left: "-100%"
 									, "margin-left": 0
 								}, slideshow.settings.transitionSpeed
 							);
 						} else {
-							o.outgoing.animate({
+							$(o.outgoing).animate({
 									left: "100%"
 									, "margin-left": 0
 								}, slideshow.settings.transitionSpeed
@@ -54,29 +68,29 @@
 					};
 
 					fx.tranIn = function (o) {
-						o.incoming.animate({
+						$(o.incoming).animate({
 							left: "50%"
 							, "margin-left": "-" + ($(o.incoming).outerWidth() / 2) + "px"
 						}, slideshow.settings.transitionSpeed, function () {
 							// position all previous and next panels
-							o.incoming.prevAll().css({
+							$(o.incoming).prevAll().css({
 								left: "-100%"
 							});
-							o.incoming.nextAll().css({
+							$(o.incoming).nextAll().css({
 								left: "100%"
 							});
 							// set wrapper height
-							if (o.incoming.outerHeight() < o.outgoing.outerHeight()) {
-								$(slideshow.panelsWrapper).css("height", o.incoming.outerHeight());
+							if ($(o.incoming).outerHeight() < $(o.outgoing).outerHeight()) {
+								$(slideshow.panelsWrapper).css("height", $(o.incoming).outerHeight());
 							}
 
-							o.incoming.addClass("current");
+							$(o.incoming).addClass("current");
 						});
 					};
 
 					fx.restart = function (o) {
 						if (o.direction === "forward") {
-							o.incoming.css({
+							$(o.incoming).css({
 								left: "100%"
 							});
 						} else {
@@ -106,17 +120,17 @@
 
 				(function () {
 					fx.tranOut = function (o) {
-						o.outgoing.removeClass("current");
+						$(o.outgoing).removeClass("current");
 
 						if (o.direction === "forward") { // up
-							o.outgoing.animate({
+							$(o.outgoing).animate({
 									top: "-100%"
 									, "margin-top": 0
 								}
 								, slideshow.settings.transitionSpeed
 							);
 						} else { // down
-							o.outgoing.animate({
+							$(o.outgoing).animate({
 									top: "100%"
 									, "margin-top": 0
 								}
@@ -126,25 +140,25 @@
 					};
 
 					fx.tranIn = function (o) {
-						o.incoming.animate({
+						$(o.incoming).animate({
 								top: "50%"
 								, "margin-top": "-" + ($(o.incoming).outerHeight() / 2) + "px"
 							}
 							, slideshow.settings.transitionSpeed
 							, function () {
 								// position all previous panels
-								o.incoming.prevAll().css({
+								$(o.incoming).prevAll().css({
 									top: "-100%"
 								});
 								// position all next panels
-								o.incoming.nextAll().css({
+								$(o.incoming).nextAll().css({
 									top: "100%"
 								});
 								// set panels wrapper height
 								if ($(o.incoming).outerHeight() < $(o.outgoing).outerHeight()) {
 									$(slideshow.panelsWrapper).css("height", $(o.incoming).outerHeight());
 								}
-								o.incoming.addClass("current");
+								$(o.incoming).addClass("current");
 							}
 						);
 					};
@@ -153,12 +167,12 @@
 						if (o.direction === "forward") {
 							$(o.incoming).css({
 								top: "100%"
-								, "margin-top": (o.incoming[0].clientHeight / 2) + "px"
+								, "margin-top": ($(o.incoming).outerHeight() / 2) + "px"
 							});
 						} else {
 							$(o.incoming).css({
 								top: "-100%"
-								, "margin-top": "-" + (o.incoming[0].clientHeight / 2) + "px"
+								, "margin-top": "-" + ($(o.incoming).outerHeight() / 2) + "px"
 							});
 						}
 					};
@@ -223,18 +237,18 @@
 					ctr.step = function (direction) {
 						var o = {};
 						var pos = "";
-						o.outgoing = $(slideshow.container).find("[data-ui='slideshow-panel'].current");
+						o.outgoing = getParts($(slideshow.container).find("[data-ui='slideshow-panel'].current"), slideshow.container);
 
 						if (o.outgoing.length) { // make sure transition has finished before starting another one
 							if (direction === "back") {
-								o.incoming = $(slideshow.container).find("[data-ui='slideshow-panel'].current").prev()
+								o.incoming = getParts($(slideshow.container).find("[data-ui='slideshow-panel'].current").prev(), slideshow.container)
 								, o.direction = "back";
 							} else {
-								o.incoming = $(slideshow.container).find("[data-ui='slideshow-panel'].current").next()
+								o.incoming = getParts($(slideshow.container).find("[data-ui='slideshow-panel'].current").next(), slideshow.container)
 								, o.direction = "forward";
 							}
 							if (o.incoming.length) { // make sure there is a panel to transition in
-								pos = $(slideshow.panels).index(o.incoming);
+								pos = $(slideshow.panels).index(o.incoming[0]);
 								fx.tranOut(o);
 								fx.tranIn(o);
 								$(slideshow.markers).removeClass("current");
@@ -267,12 +281,12 @@
 
 					ctr.jumpTo = function (p) {
 						var o = {};
-						o.outgoing = $(slideshow.container).find("[data-ui='slideshow-panel'].current")
+						o.outgoing = getParts($(slideshow.container).find("[data-ui='slideshow-panel'].current"), slideshow.container)
 								, o.incoming = $(p)
 								, o.direction = "back";
 
 						var i = 0
-							, nextPanels = o.outgoing.nextAll()
+							, nextPanels = $(o.outgoing).nextAll()
 							, l = nextPanels.length
 							, pos = $(slideshow.panels).index(o.incoming);
 
