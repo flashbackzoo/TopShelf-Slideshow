@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>TopShelf Slideshow - Nested Slideshow Demo</title>
+		<link rel="stylesheet" href="css/ts-slideshow.css">
+		<link rel="stylesheet" href="css/nested.css">
+		<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+		<script src="js/ts-slideshow.js"></script>
+	</head>
+	<body>
+		<div id="outerSlideshow" data-ui="slideshow">
+			<div class="panels" data-ui="slideshow-panelsWrapper">
+				<div class="panel" data-ui="slideshow-panel">
+					<hgroup>
+						<h1>
+							TopShelf Slideshow
+						</h1>
+						<h2>
+							Nested Slideshow Demo
+						</h2>
+					</hgroup>
+					<div class="content">
+						<h3>
+							About:
+						</h3>
+						<p>
+							TopShelf Slideshow is a UI plugin for jQuery.<br/>
+							Use it to create customizable user interfaces for your website.
+						</p>
+						<p>
+							This demo shows how TopShelf Slideshow can be used to create nested slideshows.<br/>
+							The outer slideshow is the main page navigation. The inner slideshow displays some Acid Wasp wallpapers.
+						</p>
+						<h3>
+							Author:
+						</h3>
+						<p>
+							David Craig
+						</p>
+						<h3>
+							Contact:
+						</h3>
+						<p>
+							Email: <a href="mailto:davidcraignz@gmail.com">davidcraignz@gmail.com</a><br/>
+							Twitter: <a href="http://twitter.com/flashbackzoo" target="_blank">@flashbackzoo</a><br/>
+							LinkedIn: <a href="http://nz.linkedin.com/in/davidcraignz" target="_blank">http://nz.linkedin.com/in/davidcraignz</a>
+						</p>
+					</div>
+				</div>
+				<div class="panel" data-ui="slideshow-panel">
+					<hgroup>
+						<h1>
+							TopShelf Slideshow
+						</h1>
+						<h2>
+							<a href="http://design-crisis.com/?s=acid+wasp" target="_blank">Acid Wasp</a> wallpapers by <a href="http://www.mushaboomdesign.com" target="_blank">Mashaboom Design</a>
+						</h2>
+					</hgroup>
+					<div id="innerSlideshow" data-ui="slideshow">
+						<div class="panels" data-ui="slideshow-panelsWrapper">
+							<div class="panel" data-ui="slideshow-panel">
+								<img src="img/nested/acid-wasp-01.jpg" />
+							</div>
+							<div class="panel" data-ui="slideshow-panel">
+								<img src="img/nested/acid-wasp-02.jpg" />
+							</div>
+							<div class="panel" data-ui="slideshow-panel">
+								<img src="img/nested/acid-wasp-03.jpg" />
+							</div>
+							<div class="panel" data-ui="slideshow-panel">
+								<img src="img/nested/acid-wasp-04.jpg" />
+							</div>
+						</div>
+						<div class="innerNav">
+							<a class="step back" href="" data-ui="slideshow-back">&lsaquo;</a>
+							<a class="marker" href="" data-ui="slideshow-marker"></a>
+							<a class="marker" href="" data-ui="slideshow-marker"></a>
+							<a class="marker" href="" data-ui="slideshow-marker"></a>
+							<a class="marker" href="" data-ui="slideshow-marker"></a>
+							<a class="step forward" href="" data-ui="slideshow-forward">&rsaquo;</a>
+						</div>
+					</div>
+				</div>
+				<div class="panel" data-ui="slideshow-panel">
+					<hgroup>
+						<h1>
+							TopShelf Slideshow
+						</h1>
+						<h2>
+							Get your copy
+						</h2>
+					</hgroup>
+					<div class="content">
+						<h3>
+							Download:
+						</h3>
+						<p>
+							Download in <a href="https://github.com/flashbackzoo/TopShelf-Slideshow/zipball/master">.zip</a> or <a href="https://github.com/flashbackzoo/TopShelf-Slideshow/tarball/master">.tar</a> formats
+						</p>
+						<h3>
+							Clone the project with Git:
+						</h3>
+						<pre>
+$ git clone git://github.com/flashbackzoo/TopShelf-Slideshow
+						</pre>
+						<h3>
+							View the source code:
+						</h3>
+						<p>
+							<a href="https://github.com/flashbackzoo/TopShelf-Slideshow" target="_blank">https://github.com/flashbackzoo/TopShelf-Slideshow</a>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="nav">
+				<a class="marker" href="" data-ui="slideshow-marker"></a>
+				<a class="marker" href="" data-ui="slideshow-marker"></a>
+				<a class="marker" href="" data-ui="slideshow-marker"></a>
+			</div>
+		</div>
+		<script>
+			$(function(){
+				// outer slideshow
+				$("#outerSlideshow").tsSlideshow({
+					"transition":"fade"
+					, "scroll":true
+				});
+				// inner slideshow
+				$("#innerSlideshow").tsSlideshow({
+					"loop":true
+				});
+			});
+		</script>
+	</body>
+</html>

@@ -103,6 +103,11 @@
 					fx.init = function () {
 						var i = 0
 							, l = slideshow.panels.length;
+						
+						$(slideshow.panels[0]).css({
+							left: "50%"
+							, "margin-left": "-" + ($(slideshow.panels[0]).outerWidth() / 2) + "px"
+						});
 
 						for (i = 1; i < l; i += 1) {
 							$(slideshow.panels[i]).css({

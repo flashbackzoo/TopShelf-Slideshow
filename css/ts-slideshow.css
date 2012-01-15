@@ -1,0 +1,8 @@
+/* REQUIRED BY TOPSHELF SLIDESHOW */
+*[data-ui="slideshow-panelsWrapper"]{
+	position:relative;
+	overflow:hidden;
+}
+*[data-ui="slideshow-panel"]{
+	position:absolute;
+}
