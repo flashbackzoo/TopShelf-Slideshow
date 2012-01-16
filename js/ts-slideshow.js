@@ -1,3 +1,5 @@
+// TopShelf - Slideshow ~ Copyright (c) 2011 - 2012 David Craig, http://flashbackzoo.net
+// Released under MIT license, http://www.opensource.org/licenses/mit-license.php
 (function ($) {
 	$.fn.tsSlideshow = function (options) {
 		// default settings
